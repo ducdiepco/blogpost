@@ -8,4 +8,8 @@ class Post < ApplicationRecord
   validates_presence_of :body
 
   scope :published, -> { where(published: true) }
+
+  def user_name
+    user.name
+  end
 end

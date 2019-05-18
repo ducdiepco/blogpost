@@ -3,7 +3,7 @@
 <p><%= link_to "View as JSON", user_path(@user, format: 'json') %></p>
 
 <ul>
-  <% @posts.each do |post| %>
-  <li><%= link_to post.title, post_path(post) %>
+  <% @user.posts.each do |post| %>
+    <%= render 'users/partial/post', post: post %>
   <% end %>
 </ul>

@@ -1,24 +1,23 @@
 # frozen_string_literal: true
 
 class PostsController < ApplicationController
+  self.permitted_attrs = [:sort, :id]
+
   def index
-    @posts = Post.where(published: true)
-
-    if params[:sort].present?
-      @posts = @posts.order("created_at #{params[:sort]}")
-    end
-
-    respond_to do |format|
-      format.html
-    end
+    @posts = query_object(Post.published).all
   end
 
   def show
-    @post = Post.find(params[:id])
+    @post = query_object.find_by_id_with_user
   end
 
   def comments
-    @post = Post.find(params[:id])
-    @comments = @post.comments
+    @post = query_object.find_by_id_with_comments
+  end
+
+  private
+
+  def query_object(scope = nil)
+    PostsQuery.new(initial_scope: scope, params: model_params)
   end
 end
